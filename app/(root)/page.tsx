@@ -1,4 +1,18 @@
-import SearchForm from "../components/SearchForm";
+import StartupCard from "@/components/StartupCard";
+import SearchForm from "../../components/SearchForm";
+export interface PostsProps {
+  _createdAt: Date;
+  views: number;
+  author: {
+    _id: number;
+    name: string;
+  };
+  _id: number;
+  description: string;
+  image: string;
+  category: string;
+  title: string;
+}
 
 export default async function Home({
   searchParams,
@@ -6,6 +20,23 @@ export default async function Home({
   searchParams: Promise<{ query?: string }>;
 }) {
   const query = (await searchParams).query;
+
+  const posts = [
+    {
+      _createdAt: new Date(),
+      views: 55,
+      author: {
+        _id: 1,
+        name: "Júlia Haramoni",
+      },
+      _id: 1,
+      description: "This is a description",
+      image:
+        "https://images.unsplash.com/photo-1505533321630-975218a5f66f?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D.png",
+      category: "Plants",
+      title: "We are Plants",
+    },
+  ];
 
   return (
     <>
@@ -20,6 +51,18 @@ export default async function Home({
         </p>
 
         <SearchForm query={query} />
+      </section>
+
+      <section className="px-6 py-10 max-w-7xl mx-auto">
+        <p className="text-300-semibold">
+          {query ? `Search resolts for ${query}` : "All Startups"}
+        </p>
+
+        <ul className="mt-7 grid md:grid-cols-3 sm:grid-cols-2 gap-5">
+          {posts.map((post: PostsProps) => (
+            <StartupCard post={post} key={post._id} />
+          ))}
+        </ul>
       </section>
     </>
   );
